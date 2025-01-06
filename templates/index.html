@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расчет времени полета</title>
+</head>
+<body>
+    <h1>Расчет времени полета</h1>
+    <form action="/calculate_flight_time" method="post">
+        <label for="from_city">Город проживания:</label>
+        <input type="text" id="from_city" name="from_city" required><br><br>
+        <label for="to_city">Город назначения:</label>
+        <input type="text" id="to_city" name="to_city" required><br><br>
+        <label for="departure_date">Дата вылета (YYYY-MM-DD):</label>
+        <input type="date" id="departure_date" name="departure_date" required><br><br>
+        <button type="submit">Найти</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты</title>
+</head>
+<body>
+    <h1>Результаты расчета времени полета</h1>
+    {% if flight_info %}
+        <p>Авиакомпания: {{ flight_info.airline }}</p>
+        <p>Цена: {{ flight_info.price }} RUB</p>
+        <p>Время полета: {{ flight_info.duration }} минут</p>
+        <p>Время вылета: {{ flight_info.departure_at }}</p>
+    {% else %}
+        <p>Не удалось получить информацию о полете.</p>
+    {% endif %}
+    <a href="/">Назад</a>
+</body>
+</html>
