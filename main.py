@@ -2,13 +2,10 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import httpx
+from config import TRAVELPOUT_API_KEY # Укажите ваш API ключ TravelPayouts
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
-
-# Укажите ваш API ключ TravelPayouts
-TRAVELPOUT_API_KEY = " "
-
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
