@@ -6,7 +6,8 @@ import httpx
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-TRAVELPOUT_API_KEY = ""
+# Укажите ваш API ключ TravelPayouts
+TRAVELPOUT_API_KEY = " "
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -17,18 +18,49 @@ async def read_root(request: Request):
 @app.post("/calculate_flight_time")
 async def calculate_flight_time(
         request: Request,
-        from_city: str = Form(...),  # IATA код аэропорта вылета
-        to_city: str = Form(...),  # IATA код аэропорта назначения
-        departure_date: str = Form(...)  # дата вылета в формате YYYY-MM-DD
+        from_city: str = Form(...),  # Название города вылета
+        to_city: str = Form(...),  # Название города назначения
+        departure_date: str = Form(...)  # Дата вылета
 ):
-    flight_info = await get_flight_info(from_city, to_city, departure_date)
+    # Формируем строку для поиска IATA-кодов
+    query = f"{from_city.strip()}%20{to_city.strip()}"
+
+    # Получаем IATA коды
+    iata_codes = await get_iata_codes(query)
+
+    if not iata_codes or len(iata_codes) != 2:
+        return templates.TemplateResponse("result.html", {
+            "request": request,
+            "error": "Не удалось найти IATA-коды для указанных городов."
+        })
+
+    origin_iata, destination_iata = iata_codes
+
+    # Получаем информацию о рейсе
+    flight_info = await get_flight_info(origin_iata, destination_iata, departure_date)
 
     return templates.TemplateResponse("result.html", {
         "request": request,
-        "from_city": from_city,
-        "to_city": to_city,
         "flight_info": flight_info
     })
+
+
+async def get_iata_codes(query: str):
+    async with httpx.AsyncClient() as client:
+        # Кодируем строку запроса
+        encoded_query = query.replace(" ", "%20")
+        response = await client.get(f"https://www.travelpayouts.com/widgets_suggest_params?q={encoded_query}")
+
+        print(
+            f"Запрос к API IATA: https://www.travelpayouts.com/widgets_suggest_params?q={encoded_query}")  # Для отладки
+
+        if response.status_code == 200:
+            data = response.json()
+            origin_iata = data.get('origin', {}).get('iata')
+            destination_iata = data.get('destination', {}).get('iata')
+            return origin_iata, destination_iata  # Возвращаем IATA-коды
+
+    return None
 
 
 async def get_flight_info(from_city: str, to_city: str, departure_date: str):
@@ -47,9 +79,9 @@ async def get_flight_info(from_city: str, to_city: str, departure_date: str):
         data = response.json()
 
         if response.status_code != 200 or not data.get('data'):
-            return "Не удалось получить данные о времени полета."
+            return None
 
-        # Первый рейс
+        # Берем первый рейс
         flight_data = data['data'][0]
         flight_duration = flight_data.get('duration', None)
         price = flight_data.get('price', "Неизвестная цена")
