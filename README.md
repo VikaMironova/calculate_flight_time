@@ -33,6 +33,31 @@ pip install fastapi httpx uvicorn
 TRAVELPOUT_API_KEY = "YOUR_API_KEY"  # Замените YOUR_API_KEY на ваш API ключ
 ```
 
+### Установка Docker
+
+Если у вас не установлен Docker, вы можете установить его, следуя [официальной инструкции по установке Docker](https://docs.docker.com/get-docker/).
+
+### Сборка Docker-образа
+
+После установки Docker, клонируйте этот репозиторий и перейдите в директорию проекта:
+
+```bash
+git clone https://github.com/VikaMironova/calculate_flight_time.git
+cd calculate_flight_time-main
+```
+Теперь соберите Docker-образ, выполнив следующую команду:
+
+```bash
+docker build -t your-image-name .
+```
+
+### Запуск Docker-контейнера
+
+После успешной сборки образа запустите контейнер с помощью следующей команды:
+
+```bash
+docker run -p 8000:8000 your-image-name
+```
 ### Запуск приложения
 
 Для запуска приложения выполните следующую команду:
@@ -41,10 +66,10 @@ TRAVELPOUT_API_KEY = "YOUR_API_KEY"  # Замените YOUR_API_KEY на ваш
 uvicorn main:app --reload
 ```
 
-После запуска приложения откройте браузер и перейдите по адресу:
+Запуска приложения по адресу:
 
 ```bash
-http://127.0.0.1:8000
+http://0.0.0.0:8000/
 ```
 
 ### Использование
@@ -57,12 +82,6 @@ http://127.0.0.1:8000
 - Стоимость билета
 - Время вылета
 
-### Структура проекта
 
-.
-├── main.py
-└── templates
-    ├── index.html
-    └── result.html
 
 В дальнейшем сайт будет дополняться. Планирую развернуть в Докере и открыть сервер на reg.ru
