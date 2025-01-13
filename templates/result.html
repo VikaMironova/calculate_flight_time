@@ -43,6 +43,9 @@
         a:hover {
             background-color: #1769aa;
         }
+        .button-result {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +61,10 @@
         {% else %}
             <p>Не удалось получить информацию о полете.</p>
         {% endif %}
-        <a href="/">Назад</a>
+        <div class="button-result" >
+            <a href="/">Назад</a>
+        </div>
+
     </div>
 </body>
 </html>
