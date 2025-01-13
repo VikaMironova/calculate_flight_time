@@ -2,11 +2,14 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import httpx
+from starlette.staticfiles import StaticFiles
+
 from config import TRAVELPOUT_API_KEY # Укажите ваш API ключ TravelPayouts
 from datetime import datetime, timezone, timedelta
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -98,3 +101,6 @@ async def get_flight_info(from_city: str, to_city: str, departure_date: str):
             "airline": airline,
             "departure_at": formatted_departure_at  # Используем отформатированное время
         }
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=7777)

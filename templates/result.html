@@ -4,19 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Результаты</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('/static/img/fon.jpg') no-repeat center center fixed; /* Обновленный путь к .jpg файлу */
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .results-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 50px;
+            text-align: left;
+            width: 80%;
+            max-width: 400px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2196f3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        a:hover {
+            background-color: #1769aa;
+        }
+    </style>
 </head>
 <body>
     <h1>Результаты расчета времени полета</h1>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% elif flight_info %}
-        <p>Авиакомпания: {{ flight_info.airline }}</p>
-        <p>Цена: {{ flight_info.price }} рублей</p>
-        <p>Время полета: {{ flight_info.duration }} минут</p>
-        <p>Время вылета: {{ flight_info.departure_at }}</p>
-    {% else %}
-        <p>Не удалось получить информацию о полете.</p>
-    {% endif %}
-    <a href="/">Назад</a>
+    <div class="results-container">
+        {% if error %}
+            <p>{{ error }}</p>
+        {% elif flight_info %}
+            <p><strong>Авиакомпания:</strong> {{ flight_info.airline }}</p>
+            <p><strong>Цена:</strong> {{ flight_info.price }} рублей</p>
+            <p><strong>Время полета:</strong> {{ flight_info.duration }} минут</p>
+            <p><strong>Время вылета:</strong> {{ flight_info.departure_at }}</p>
+        {% else %}
+            <p>Не удалось получить информацию о полете.</p>
+        {% endif %}
+        <a href="/">Назад</a>
+    </div>
 </body>
 </html>
